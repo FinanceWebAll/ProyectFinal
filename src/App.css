@@ -1,0 +1,48 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #034f45; /* Fondo verde oscuro */
+}
+
+.app-container {
+  height: 100vh;
+}
+
+.login-card {
+  max-width: 400px;
+  width: 100%;
+  border-radius: 15px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: white;
+}
+
+.card {
+  border: none;
+}
+
+.form-control {
+  border-radius: 5px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-success {
+  background-color: #28a745;
+  border: none;
+  transition: background-color 0.3s;
+}
+
+.btn-success:hover {
+  background-color: #218838;
+}
+
+.form-label {
+  font-weight: bold;
+}
+
+a, .btn-link {
+  text-decoration: none;
+}
+
+a:hover, .btn-link:hover {
+  text-decoration: underline;
+}
