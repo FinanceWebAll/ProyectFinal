@@ -38,6 +38,9 @@ function Historial() {
               <li className="nav-item">
                 <Link className="nav-link text-light" to="/historial">Historial</Link>
               </li>
+              <li className="nav-item">
+                <Link className="nav-link text-light" to="/facturacion">Facturación</Link>
+              </li>
             </ul>
           </div>
 

@@ -1,0 +1,187 @@
+/* Fondo general de la página */
+
+
+/* Facturación */
+.facturacion-container {
+    background-color: rgb(18, 18, 18);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+ /* Para dejar espacio por encima del navbar */
+}
+
+/* Card de facturación */
+.facturacion-card {
+    background-color: #2a2a2a;
+    color: #fff;
+    width: 100%;
+    max-width: 800px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+/* Títulos */
+.facturacion-card h2 {
+    font-size: 2rem;
+    color: #28a745; /* Verde para el título principal */
+    margin-bottom: 20px;
+}
+
+.facturacion-card h4 {
+    font-size: 1.2rem;
+    color: #28a745; /* Blanco para el subtítulo */
+    margin-bottom: 10px;
+}
+
+/* Estilo del formulario */
+.facturacion-form {
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    color: #fff;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: none;
+    background-color: #333;
+    color: #fff; /* Cambié el color del texto dentro de los inputs a blanco */
+}
+
+.btn-agregar {
+    background-color: #28a745;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.btn-agregar:hover {
+    background-color: #218838;
+}
+
+/* Estilo de la tabla de facturas */
+.facturacion-table {
+    border-radius: 10px;
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.facturacion-table th,
+.facturacion-table td {
+
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #444; /* Bordes oscuros finos */
+}
+
+.facturacion-table th {
+    background-color: #1b1b1b; /* Fondo oscuro para los encabezados */
+    font-weight: bold;
+    color: #28a745; /* Verde para los encabezados */
+}
+
+.facturacion-table td {
+    background-color: #333; /* Fondo oscuro para las celdas */
+    color: #fff; /* Color blanco para el texto en las celdas */
+}
+
+/* Estilo de las filas vencidas */
+.factura-vencida {
+    background-color: #555; /* Gris oscuro para facturas vencidas */
+    color: #bbb; /* Texto gris claro */
+}
+
+/* Efecto Hover en las filas */
+.facturacion-table tr:hover {
+    background-color: #444; /* Fondo oscuro y suave en hover */
+    cursor: pointer;
+}
+
+/* Estilo de la TCEA */
+.tcea-container {
+    margin-top: 20px;
+}
+
+.tcea-container p {
+    font-size: 1.2rem;
+    color: #28a745; /* Verde para el TCEA */
+    font-weight: bold;
+}
+
+/* Estilo del botón Eliminar */
+.btn-eliminar {
+    background-color: #e74c3c; /* Rojo para el botón de eliminar */
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
+
+.btn-eliminar:hover {
+    background-color: #c0392b; /* Rojo más oscuro al hacer hover */
+}
+
+/* Estilo de los detalles de la factura */
+.factura-detalles {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #2a2a2a; /* Fondo oscuro de la card */
+    color: #fff; /* Texto blanco */
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.factura-detalles h4 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.factura-detalles p {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+}
+
+/* Detalles de la factura consolidada */
+.consolidado-container {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #2a2a2a; /* Fondo oscuro de la card */
+    color: #fff; /* Texto blanco */
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.consolidado-container h4 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.consolidado-container p {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+
+/* Cambiar color del texto de las etiquetas 'Total Facturado' y 'TCEA de toda la cartera' */
+.total-label,
+.tcea-label {
+    color: #28a745; /* Verde */
+}

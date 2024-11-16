@@ -36,7 +36,7 @@ function Home() {
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      navigate('/'); 
+      navigate('/');
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
     }
@@ -44,10 +44,8 @@ function Home() {
 
   return (
     <div className="home-container" style={{ backgroundColor: '#121212', minHeight: '100vh' }}>
-  
       <nav className="navbar navbar-expand-lg navbar-dark shadow-sm" style={{ backgroundColor: '#1f1f1f' }}>
         <div className="container d-flex justify-content-between align-items-center">
-       
           <Link className="navbar-brand text-light d-flex align-items-center" to="/home">
             <FaWallet size={30} color="#4caf50" style={{ marginRight: '10px' }} />
           </Link>
@@ -63,6 +61,9 @@ function Home() {
               <li className="nav-item">
                 <Link className="nav-link text-light" to="/historial">Historial</Link>
               </li>
+              <li className="nav-item">
+                <Link className="nav-link text-light" to="/facturacion">Facturación</Link> {/* Nuevo enlace */}
+              </li>
             </ul>
           </div>
 
@@ -76,7 +77,6 @@ function Home() {
           </div>
         </div>
       </nav>
-
 
       <div className="container mt-5">
         <div className="card p-5 text-center" style={{ backgroundColor: '#1f1f1f', borderRadius: '15px', boxShadow: '0 10px 25px rgba(0, 0, 0, 0.5)' }}>
