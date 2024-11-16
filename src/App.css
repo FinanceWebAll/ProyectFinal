@@ -1,8 +1,7 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background-color: #034f45; /* Fondo verde oscuro para todo el body */
-  color: white; /* Asegura que el texto en general sea blanco */
+  background-color: #034f45; /* Fondo verde oscuro */
 }
 
 .app-container {
@@ -14,7 +13,7 @@ body {
   width: 100%;
   border-radius: 15px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  background-color: #121212; /* Fondo oscuro para la tarjeta de login */
+  background-color: white;
 }
 
 .card {
@@ -47,4 +46,3 @@ a, .btn-link {
 a:hover, .btn-link:hover {
   text-decoration: underline;
 }
-
