@@ -17,10 +17,6 @@ import IndicadoresRentabilidad from './Operaciones/IndicadoresRentabilidad';
 import SimulacionPago from './Operaciones/SimulacionPago';
 import EvaluacionInstrumentos from './Operaciones/EvaluacionInstrumentos';
 import GeneradorFlujoCaja from './Operaciones/GeneradorFlujoCaja';
-import Facturacion from './Facturacion';
-
-
-
 
 function App() {
   return (
@@ -39,7 +35,6 @@ function App() {
         <Route path="/simulacion-pago" element={<SimulacionPago />} />
         <Route path="/evaluacion-instrumentos" element={<EvaluacionInstrumentos />} />
         <Route path="/generador-flujo-caja" element={<GeneradorFlujoCaja />} />
-        <Route path="/facturacion" element={<Facturacion />} />
       </Routes>
     </Router>
   );
