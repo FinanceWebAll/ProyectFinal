@@ -19,6 +19,11 @@ import EvaluacionInstrumentos from './Operaciones/EvaluacionInstrumentos';
 import GeneradorFlujoCaja from './Operaciones/GeneradorFlujoCaja';
 import Facturacion from './Facturacion';
 import Wacc from './Operaciones/Wacc';  
+import Cartera from './Cartera/Cartera.js'
+import Facture from './Cartera/Facture'
+import ManageCarteras from "./Cartera/ManageCarteras";
+import SetDiscountDate from "./Cartera/setDiscountDate";
+import Report from "./Cartera/Report";
 
 
 
@@ -41,6 +46,11 @@ function App() {
         <Route path="/generador-flujo-caja" element={<GeneradorFlujoCaja />} />
         <Route path="/wacc" element={<Wacc />} />
         <Route path="/facturacion" element={<Facturacion />} />
+        <Route path="/cartera" element={<Cartera />} />
+        <Route path="/facture" element={<Facture />} />
+        <Route path="/manage-carteras" element={<ManageCarteras />} />
+        <Route path="/set-discountDate" element={<SetDiscountDate />} />
+        <Route path="/report" element={<Report />} />
       </Routes>
     </Router>
   );
