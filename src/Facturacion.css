@@ -1,28 +1,48 @@
 /* Fondo general de la página */
 
 
+/* Estilo general del navbar */
+
+
+/* Facturación */
+
+
 /* Facturación */
 .facturacion-container {
     background-color: rgb(18, 18, 18);
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
+    display: flex; /* Usamos flexbox */
+    flex-direction: column; /* Mantiene el flujo vertical */
+    justify-content: flex-start; /* Inicia desde la parte superior */
+    align-items: center; /* Centra horizontalmente */
     height: 100vh;
- /* Para dejar espacio por encima del navbar */
+   
+    box-sizing: border-box; /* Incluye el padding en el tamaño total */
 }
 
-/* Card de facturación */
+/* Navbar */
+.navbar {
+    width: 100%;
+    position: fixed; /* Fija el navbar en la parte superior */
+    top: 0;
+    left: 0;
+    z-index: 1000; /* Asegura que el navbar esté siempre encima */
+    background-color: #1f1f1f; /* Fondo oscuro para consistencia */
+    border-bottom: 1px solid #444; /* Línea sutil para separar visualmente */
+}
+
+/* Facturación Card */
 .facturacion-card {
     background-color: #2a2a2a;
     color: #fff;
-    width: 100%;
-    max-width: 800px;
+    width: 90%; /* Ocupa la mayor parte de la pantalla */
+    max-width: 800px; /* Pero no más de 800px */
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    margin-top: 20px; /* Espaciado debajo del navbar */
     text-align: center;
 }
+
 
 /* Títulos */
 .facturacion-card h2 {

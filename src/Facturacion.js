@@ -98,7 +98,9 @@ const Facturacion = () => {
 
   return (
     <div className="facturacion-container" style={{ backgroundColor: '#121212', minHeight: '100vh' }}>
-      <nav className="navbar navbar-expand-lg navbar-dark shadow-sm" style={{ backgroundColor: '#1f1f1f', width: '100%' }}>
+     
+     
+<nav className="navbar navbar-expand-lg navbar-dark shadow-sm" style={{ backgroundColor: '#1f1f1f' }}>
         <div className="container d-flex justify-content-between align-items-center">
           <Link className="navbar-brand text-light d-flex align-items-center" to="/home">
             <FaWallet size={30} color="#4caf50" style={{ marginRight: '10px' }} />
@@ -113,10 +115,13 @@ const Facturacion = () => {
                 <Link className="nav-link text-light" to="/explorar-operaciones">Realizar Operación</Link>
               </li>
               <li className="nav-item">
+                <Link className="nav-link text-light" to="/Cartera">Cartera</Link>
+              </li>
+              <li className="nav-item">
                 <Link className="nav-link text-light" to="/historial">Historial</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link text-light" to="/facturacion">Facturación</Link>
+                <Link className="nav-link text-light" to="/facturacion">Facturación</Link> {/* Nuevo enlace */}
               </li>
             </ul>
           </div>
@@ -131,6 +136,8 @@ const Facturacion = () => {
           </div>
         </div>
       </nav>
+
+
 
       <div className="facturacion-card" style={{ marginTop: '60px' }}>
         <h2>Facturación</h2>
