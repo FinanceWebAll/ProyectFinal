@@ -83,8 +83,18 @@ function Historial() {
                     </div>
                   )}
 
+                  {/* Para "Simulación de Planes de Pago" */}
+                  {operacion.descripcion === 'Simulación de Planes de Pago' && (
+                    <div>
+                      <p><strong>Monto del préstamo:</strong> {operacion.monto}</p>
+                      <p><strong>Número de cuotas:</strong> {operacion.cuotas}</p>
+                      <p><strong>Tasa de interés (% anual):</strong> {operacion.tasaInteres}%</p>
+                      <p><strong>Cuota mensual:</strong> {operacion.cuotaMensual}</p>
+                    </div>
+                  )}
+
                   {/* Para las demás operaciones */}
-                  {operacion.descripcion !== 'Indicadores de Rentabilidad (VAN)' && (
+                  {operacion.descripcion !== 'Indicadores de Rentabilidad (VAN)' && operacion.descripcion !== 'Simulación de Planes de Pago' && (
                     <>
                       <p><strong>Capital Inicial:</strong> {operacion.capital}</p>
                       {operacion.tasa && <p><strong>Tasa de Interés:</strong> {operacion.tasa}%</p>}
