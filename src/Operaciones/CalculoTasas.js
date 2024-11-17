@@ -11,6 +11,22 @@ function CalculoTasas() {
   const [resultado, setResultado] = useState(null);
   const navigate = useNavigate();
 
+  // Función para guardar la operación en el historial
+  const agregarOperacion = (descripcion, monto, fecha, capital, tasa, tiempo) => {
+    const historialActual = JSON.parse(localStorage.getItem('historialOperaciones')) || [];
+    const nuevaOperacion = {
+      descripcion,
+      monto,
+      fecha,
+      capital,
+      tasa,
+      tiempo
+    };
+    historialActual.push(nuevaOperacion);
+    localStorage.setItem('historialOperaciones', JSON.stringify(historialActual));
+  };
+
+  // Función para calcular la tasa y agregar la operación al historial
   const calcularTasa = () => {
     let res;
     if (tipoTasa === 'simple') {
@@ -18,20 +34,27 @@ function CalculoTasas() {
     } else if (tipoTasa === 'compuesta') {
       res = principal * Math.pow(1 + tasa / 100, tiempo);
     }
-    setResultado(res.toFixed(2));
+    const montoFinal = res.toFixed(2);
+    setResultado(montoFinal);  // Guardamos el resultado para mostrarlo
+
+    // Agregar la operación al historial con la fecha y monto calculado
+    agregarOperacion(
+      tipoTasa === 'simple' ? 'Tasa Simple' : 'Tasa Compuesta', 
+      montoFinal, 
+      new Date().toLocaleString(), // Se guarda la fecha actual de la transacción
+      principal,
+      tasa,
+      tiempo
+    );
   };
 
   return (
     <div className="calculo-tasas-container" style={{ backgroundColor: '#121212', minHeight: '100vh' }}>
-      {}
       <nav className="navbar navbar-expand-lg navbar-dark shadow-sm" style={{ backgroundColor: '#1f1f1f' }}>
         <div className="container d-flex justify-content-between align-items-center">
-          {}
           <Link className="navbar-brand text-light d-flex align-items-center" to="/explorar-operaciones">
             <FaWallet size={30} color="#4caf50" style={{ marginRight: '10px' }} />
           </Link>
-
-          {}
           <div className="collapse navbar-collapse justify-content-center" id="navbarNav">
             <ul className="navbar-nav">
               <li className="nav-item">
@@ -48,15 +71,12 @@ function CalculoTasas() {
               </li>
             </ul>
           </div>
-
-          {}
           <Link to="/perfil" className="nav-link text-light d-flex align-items-center">
             <FaUserCircle size={30} color="#4caf50" />
           </Link>
         </div>
       </nav>
 
-      {}
       <div className="container mt-5">
         <div className="card p-4" style={{ backgroundColor: '#1f1f1f', borderRadius: '15px', boxShadow: '0 10px 25px rgba(0, 0, 0, 0.5)' }}>
           <h2 className="text-center mb-4" style={{ color: '#ffffff', fontWeight: 'bold' }}>Cálculo de Tasas de Interés</h2>
