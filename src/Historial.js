@@ -66,24 +66,40 @@ function Historial() {
                 <div className="list-group-item" key={index} style={{ backgroundColor: '#1f1f1f', color: '#fff' }}>
                   <p><strong>Descripción:</strong> {operacion.descripcion}</p>
 
-                  {/* Para "Indicadores de Rentabilidad (VAN)", no mostrar Capital Inicial y el título Flujos de Caja */}
+                  {/* Mostrar datos específicos según la descripción */}
                   {operacion.descripcion === 'Indicadores de Rentabilidad (VAN)' && (
+  <div>
+    <p><strong>Tasa de Descuento:</strong> {operacion.tasaDescuento}%</p>
+    {operacion.flujos.map((flujo, flujoIndex) => (
+      <div key={flujoIndex}>
+        <h6><strong>Periodo {flujoIndex + 1}</strong></h6> {/* Añadir número del periodo */}
+        <p><strong>Año:</strong> {flujo.anio}</p>
+        <p><strong>Flujo de Caja:</strong> {flujo.flujo}</p>
+      </div>
+    ))}
+    {operacion.resultado !== undefined && (
+      <p><strong>Resultado VAN Total:</strong> {operacion.resultado}</p>
+    )}
+  </div>
+)}
+
+
+                  {operacion.descripcion === 'Generador de Flujos de Caja' && (
                     <div>
-                      <p><strong>Tasa de Descuento:</strong> {operacion.tasaDescuento}%</p>
                       {operacion.flujos.map((flujo, flujoIndex) => (
                         <div key={flujoIndex}>
-                          <h6><strong>AÑO {flujoIndex + 1}</strong></h6>
-                          <p><strong>Año:</strong> {flujo.anio}</p>
-                          <p><strong>Flujo de Caja:</strong> {flujo.flujo}</p>
+                          <h6><strong>Periodo {flujo.periodo}</strong></h6>
+                          <p><strong>Ingresos:</strong> {flujo.ingresos}</p>
+                          <p><strong>Costos:</strong> {flujo.costos}</p>
+                          <p><strong>Flujo de Caja:</strong> {flujo.flujoNeto}</p>
                         </div>
                       ))}
-                      {operacion.resultado !== undefined && (
-                        <p><strong>Resultado VAN Total:</strong> {operacion.resultado}</p>
+                      {operacion.flujoTotal && (
+                        <p><strong>Flujo de Caja Total:</strong> {operacion.flujoTotal}</p>
                       )}
                     </div>
                   )}
 
-                  {/* Para "Simulación de Planes de Pago" */}
                   {operacion.descripcion === 'Simulación de Planes de Pago' && (
                     <div>
                       <p><strong>Monto del préstamo:</strong> {operacion.monto}</p>
@@ -93,21 +109,24 @@ function Historial() {
                     </div>
                   )}
 
-                  {/* Para las demás operaciones */}
-                  {operacion.descripcion !== 'Indicadores de Rentabilidad (VAN)' && operacion.descripcion !== 'Simulación de Planes de Pago' && (
-                    <>
-                      <p><strong>Capital Inicial:</strong> {operacion.capital}</p>
-                      {operacion.tasa && <p><strong>Tasa de Interés:</strong> {operacion.tasa}%</p>}
-                      {operacion.tiempo && <p><strong>Tiempo:</strong> {operacion.tiempo} años</p>}
-                      {operacion.monto && <p><strong>Monto Final:</strong> {operacion.monto}</p>}
-                      {operacion.tcea && <p><strong>TCEA:</strong> {operacion.tcea}%</p>}
-                      {operacion.descripcion === 'Evaluación de Instrumentos Financieros' && operacion.tasaAnual && (
-                        <p><strong>Tasa Anual:</strong> {operacion.tasaAnual}%</p>
-                      )}
-                    </>
-                  )}
+                  {operacion.descripcion !== 'Generador de Flujos de Caja' &&
+                    operacion.descripcion !== 'Indicadores de Rentabilidad (VAN)' &&
+                    operacion.descripcion !== 'Simulación de Planes de Pago' && (
+                      <>
+                        {operacion.capital && (
+                          <p><strong>Capital Inicial:</strong> {operacion.capital}</p>
+                        )}
+                        {operacion.tasa && <p><strong>Tasa de Interés:</strong> {operacion.tasa}%</p>}
+                        {operacion.tiempo && <p><strong>Tiempo:</strong> {operacion.tiempo} años</p>}
+                        {operacion.monto && <p><strong>Monto Final:</strong> {operacion.monto}</p>}
+                        {operacion.tcea && <p><strong>TCEA:</strong> {operacion.tcea}%</p>}
+                        {operacion.tasaAnual && (
+                          <p><strong>Tasa Anual:</strong> {operacion.tasaAnual}%</p>
+                        )}
+                      </>
+                    )}
 
-                  {/* Mostrar la fecha solo al final */}
+                  {/* Mostrar la fecha solo una vez */}
                   <p><strong>Fecha:</strong> {operacion.fecha}</p>
                 </div>
               ))

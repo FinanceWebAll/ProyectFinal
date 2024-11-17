@@ -38,12 +38,13 @@ function GeneradorFlujoCaja() {
       flujoTotal,  // El flujo total que es el resultado final
       fecha: new Date().toLocaleString(),  // Fecha en que se hizo la operación
     };
-
+  
     // Guardar en localStorage solo los detalles del flujo en el historial
     const historialActual = JSON.parse(localStorage.getItem('historialOperaciones')) || [];
     historialActual.push(nuevaOperacion);
     localStorage.setItem('historialOperaciones', JSON.stringify(historialActual));
   };
+  
 
   const calcularFlujoCaja = () => {
     if (flujos.some(flujo => flujo.ingresos === '' || flujo.costos === '')) {
