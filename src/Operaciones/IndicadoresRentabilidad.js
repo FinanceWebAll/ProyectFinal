@@ -29,30 +29,20 @@ function IndicadoresRentabilidad() {
     flujos.forEach(({ anio, flujo }) => {
       van += parseFloat(flujo) / Math.pow(1 + tasaDescuento / 100, parseInt(anio));
     });
-    const resultadoVAN = van.toFixed(2);
-    setResultado(resultadoVAN);
-
-    // Guardar la operación en el historial
-    const operacion = {
-      descripcion: 'Indicadores de Rentabilidad (VAN)',
-      tasaDescuento,
-      flujos,
-      resultado: resultadoVAN,
-      fecha: new Date().toLocaleString(),
-    };
-
-    const historialGuardado = JSON.parse(localStorage.getItem('historialOperaciones')) || [];
-    historialGuardado.push(operacion);
-    localStorage.setItem('historialOperaciones', JSON.stringify(historialGuardado));
+    setResultado(van.toFixed(2));
   };
 
   return (
     <div className="indicadores-rentabilidad-container" style={{ backgroundColor: '#121212', minHeight: '100vh' }}>
+      {}
       <nav className="navbar navbar-expand-lg navbar-dark shadow-sm" style={{ backgroundColor: '#1f1f1f' }}>
         <div className="container d-flex justify-content-between align-items-center">
+          {}
           <Link className="navbar-brand text-light d-flex align-items-center" to="/explorar-operaciones">
             <FaWallet size={30} color="#4caf50" style={{ marginRight: '10px' }} />
           </Link>
+
+          {}
           <div className="collapse navbar-collapse justify-content-center" id="navbarNav">
             <ul className="navbar-nav">
               <li className="nav-item">
@@ -69,16 +59,20 @@ function IndicadoresRentabilidad() {
               </li>
             </ul>
           </div>
+
+          {}
           <Link to="/perfil" className="nav-link text-light d-flex align-items-center">
             <FaUserCircle size={30} color="#4caf50" />
           </Link>
         </div>
       </nav>
 
+      {}
       <div className="container mt-5">
         <div className="card p-4" style={{ backgroundColor: '#1f1f1f', borderRadius: '15px', boxShadow: '0 10px 25px rgba(0, 0, 0, 0.5)' }}>
           <h2 className="text-center mb-4" style={{ color: '#ffffff', fontWeight: 'bold' }}>Indicadores de Rentabilidad (VAN, TIR)</h2>
 
+          {}
           <div className="form-group mt-3">
             <label style={{ color: '#b3b3b3' }}>Tasa de Descuento (%):</label>
             <input
@@ -90,6 +84,7 @@ function IndicadoresRentabilidad() {
             />
           </div>
 
+          {}
           {flujos.map((flujo, index) => (
             <div key={index} className="form-group mt-4">
               <h5 style={{ color: '#4caf50' }}>Año {index + 1}:</h5>
@@ -118,6 +113,7 @@ function IndicadoresRentabilidad() {
             </div>
           ))}
 
+          {}
           <div className="d-flex justify-content-between mt-4">
             <button className="btn btn-secondary" onClick={agregarFlujo}>
               Agregar Año
@@ -127,12 +123,14 @@ function IndicadoresRentabilidad() {
             </button>
           </div>
 
+          {}
           {resultado && (
             <div className="resultado mt-4" style={{ color: '#4caf50', fontSize: '1.5em', textAlign: 'center' }}>
               VAN: {resultado}
             </div>
           )}
 
+          {}
           <button
             className="btn btn-secondary mt-4"
             style={{ width: '100%', border: 'none' }}
@@ -147,4 +145,3 @@ function IndicadoresRentabilidad() {
 }
 
 export default IndicadoresRentabilidad;
-
