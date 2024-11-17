@@ -18,19 +18,31 @@ function SimulacionPago() {
     const tasaMensual = (tasaInteres / 100) / 12;
     const cuota = (monto * tasaMensual) / (1 - Math.pow(1 + tasaMensual, -cuotas));
     setResultado(cuota.toFixed(2));
+
+    // Crear una nueva operación para guardar en el historial
+    const nuevaOperacion = {
+      descripcion: 'Simulación de Planes de Pago',  // Descripción
+      monto: monto,
+      cuotas: cuotas,
+      tasaInteres: tasaInteres,
+      cuotaMensual: cuota.toFixed(2),  // Guardar la cuota mensual calculada
+      fecha: new Date().toLocaleString(), // Fecha de la operación
+    };
+
+    // Recuperar el historial actual, agregar la nueva operación y guardar de nuevo
+    const historialGuardado = JSON.parse(localStorage.getItem('historialOperaciones')) || [];
+    historialGuardado.push(nuevaOperacion);
+    localStorage.setItem('historialOperaciones', JSON.stringify(historialGuardado));
   };
 
   return (
     <div className="simulacion-pago-container" style={{ backgroundColor: '#121212', minHeight: '100vh' }}>
-      {}
       <nav className="navbar navbar-expand-lg navbar-dark shadow-sm" style={{ backgroundColor: '#1f1f1f' }}>
         <div className="container d-flex justify-content-between align-items-center">
-          {}
           <Link className="navbar-brand text-light d-flex align-items-center" to="/explorar-operaciones">
             <FaWallet size={30} color="#4caf50" style={{ marginRight: '10px' }} />
           </Link>
 
-          {}
           <div className="collapse navbar-collapse justify-content-center" id="navbarNav">
             <ul className="navbar-nav">
               <li className="nav-item">
@@ -45,14 +57,12 @@ function SimulacionPago() {
             </ul>
           </div>
 
-          {}
           <Link to="/perfil" className="nav-link text-light d-flex align-items-center">
             <FaUserCircle size={30} color="#4caf50" />
           </Link>
         </div>
       </nav>
 
-      {}
       <div className="container mt-5">
         <div className="card p-4" style={{ backgroundColor: '#1f1f1f', borderRadius: '15px', boxShadow: '0 10px 25px rgba(0, 0, 0, 0.5)' }}>
           <h2 className="text-center mb-4" style={{ color: '#ffffff', fontWeight: 'bold' }}>Simulación de Planes de Pago</h2>
@@ -99,7 +109,6 @@ function SimulacionPago() {
             </div>
           )}
 
-          {}
           <button
             className="btn btn-secondary mt-4"
             style={{ width: '100%', border: 'none', borderRadius: '25px' }}

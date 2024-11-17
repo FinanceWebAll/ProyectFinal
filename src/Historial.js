@@ -8,17 +8,15 @@ import './Historial.css';
 function Historial() {
   const [operaciones, setOperaciones] = useState([]);
   const navigate = useNavigate();
-  
-  // Función para cargar el historial desde localStorage
+
   const cargarHistorial = () => {
     const historialGuardado = JSON.parse(localStorage.getItem('historialOperaciones')) || [];
     setOperaciones(historialGuardado); // Cargar operaciones en el estado
   };
 
-  // Cargar el historial cuando el componente se monta
   useEffect(() => {
     cargarHistorial();
-  }, []); // Este efecto solo se ejecutará una vez al montar el componente
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -67,10 +65,39 @@ function Historial() {
               operaciones.map((operacion, index) => (
                 <div className="list-group-item" key={index} style={{ backgroundColor: '#1f1f1f', color: '#fff' }}>
                   <p><strong>Descripción:</strong> {operacion.descripcion}</p>
-                  <p><strong>Capital Inicial:</strong> {operacion.capital}</p>
-                  <p><strong>Tasa de Interés:</strong> {operacion.tasa}%</p>
-                  <p><strong>Tiempo:</strong> {operacion.tiempo} años</p>
-                  <p><strong>Monto Final:</strong> {operacion.monto}</p>
+
+                  {/* Para "Indicadores de Rentabilidad (VAN)", no mostrar Capital Inicial y el título Flujos de Caja */}
+                  {operacion.descripcion === 'Indicadores de Rentabilidad (VAN)' && (
+                    <div>
+                      <p><strong>Tasa de Descuento:</strong> {operacion.tasaDescuento}%</p>
+                      {operacion.flujos.map((flujo, flujoIndex) => (
+                        <div key={flujoIndex}>
+                          <h6><strong>AÑO {flujoIndex + 1}</strong></h6>
+                          <p><strong>Año:</strong> {flujo.anio}</p>
+                          <p><strong>Flujo de Caja:</strong> {flujo.flujo}</p>
+                        </div>
+                      ))}
+                      {operacion.resultado !== undefined && (
+                        <p><strong>Resultado VAN Total:</strong> {operacion.resultado}</p>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Para las demás operaciones */}
+                  {operacion.descripcion !== 'Indicadores de Rentabilidad (VAN)' && (
+                    <>
+                      <p><strong>Capital Inicial:</strong> {operacion.capital}</p>
+                      {operacion.tasa && <p><strong>Tasa de Interés:</strong> {operacion.tasa}%</p>}
+                      {operacion.tiempo && <p><strong>Tiempo:</strong> {operacion.tiempo} años</p>}
+                      {operacion.monto && <p><strong>Monto Final:</strong> {operacion.monto}</p>}
+                      {operacion.tcea && <p><strong>TCEA:</strong> {operacion.tcea}%</p>}
+                      {operacion.descripcion === 'Evaluación de Instrumentos Financieros' && operacion.tasaAnual && (
+                        <p><strong>Tasa Anual:</strong> {operacion.tasaAnual}%</p>
+                      )}
+                    </>
+                  )}
+
+                  {/* Mostrar la fecha solo al final */}
                   <p><strong>Fecha:</strong> {operacion.fecha}</p>
                 </div>
               ))
