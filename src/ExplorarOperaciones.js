@@ -152,6 +152,20 @@ function ExplorarOperaciones() {
                 </button>
               </div>
             </div>
+            
+            <div className="col-md-6 mb-4">
+              <div className="card p-3" style={{ backgroundColor: '#2c2c2c', borderRadius: '10px' }}>
+                <h5 style={{ color: '#4caf50' }}>Wacc</h5>
+                <p>Calcula el Costo Promedio Ponderado de Capital (Wacc) considerando Precio de la acción, Tasa de crecimiento, Último dividendo y Costo de flotación.</p>
+                <button
+                  className="btn btn-success mt-2"
+                  style={{ backgroundColor: '#4caf50', border: 'none' }}
+                  onClick={() => navigate('/wacc')}
+                >
+                  Calcular Wacc
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>

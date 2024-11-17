@@ -18,7 +18,7 @@ import SimulacionPago from './Operaciones/SimulacionPago';
 import EvaluacionInstrumentos from './Operaciones/EvaluacionInstrumentos';
 import GeneradorFlujoCaja from './Operaciones/GeneradorFlujoCaja';
 import Facturacion from './Facturacion';
-
+import Wacc from './Operaciones/Wacc';  
 
 
 
@@ -39,6 +39,7 @@ function App() {
         <Route path="/simulacion-pago" element={<SimulacionPago />} />
         <Route path="/evaluacion-instrumentos" element={<EvaluacionInstrumentos />} />
         <Route path="/generador-flujo-caja" element={<GeneradorFlujoCaja />} />
+        <Route path="/wacc" element={<Wacc />} />
         <Route path="/facturacion" element={<Facturacion />} />
       </Routes>
     </Router>
