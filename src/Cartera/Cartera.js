@@ -35,7 +35,7 @@ function ExplorarOperaciones() {
                 <Link className="nav-link text-light" to="/home">Inicio</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link text-light" to="/explorar-operaciones">Realizar Operación</Link>
+                <Link className="nav-link text-light" to="/explorar-operaciones">Explorar Operaciones</Link>
               </li>
               <li className="nav-item">
                 <Link className="nav-link text-light" to="/Cartera">Cartera</Link>
@@ -63,7 +63,7 @@ function ExplorarOperaciones() {
 
             <div className="container mt-5">
                 <div className="card p-4" style={{ backgroundColor: '#1f1f1f', borderRadius: '15px', boxShadow: '0 10px 25px rgba(0, 0, 0, 0.5)', color: '#b3b3b3' }}>
-                    <h2 className="text-center mb-4" style={{ color: '#ffffff', fontWeight: 'bold' }}>Explorar Operaciones</h2>
+                    <h2 className="text-center mb-4" style={{ color: '#ffffff', fontWeight: 'bold' }}>Cartera de Procesos</h2>
 
                     <div className="row">
 

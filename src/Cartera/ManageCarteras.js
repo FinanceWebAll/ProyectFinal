@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { db, auth } from "../utils/firebase"; // Configuración de Firebase
+import { db, auth } from "../utils/firebase";
 import { collection, addDoc, deleteDoc, doc, query, where, getDocs } from "firebase/firestore";
+import { FaWallet, FaUserCircle, FaSignOutAlt } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
 
 function ManageCarteras() {
     const [carteras, setCarteras] = useState([]);
     const [newCartera, setNewCartera] = useState("");
     const [userId, setUserId] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchUser = () => {
-            const user = auth.currentUser; // Usuario autenticado
+            const user = auth.currentUser;
             if (user) {
-                setUserId(user.uid); // Almacena el UID del usuario
+                setUserId(user.uid);
                 fetchCarteras(user.uid);
             }
         };
@@ -42,13 +45,13 @@ function ManageCarteras() {
             await addDoc(collection(db, "carteras"), {
                 nombre: newCartera,
                 descripcion: "Cartera personalizada del usuario",
-                userId: userId, // Asociar cartera al usuario
+                userId: userId,
                 fechaCreacion: new Date().toISOString(),
             });
 
             alert("Cartera creada exitosamente.");
             setNewCartera("");
-            fetchCarteras(userId); // Actualiza la lista de carteras
+            fetchCarteras(userId);
         } catch (error) {
             console.error("Error al crear la cartera:", error);
         }
@@ -64,8 +67,56 @@ function ManageCarteras() {
         }
     };
 
+    const handleLogout = async () => {
+        try {
+            await auth.signOut();
+            navigate("/");
+        } catch (error) {
+            console.error("Error al cerrar sesión:", error);
+        }
+    };
+
     return (
         <div style={{ backgroundColor: "#121212", minHeight: "100vh" }}>
+            {/* Navbar */}
+            <nav className="navbar navbar-expand-lg navbar-dark shadow-sm" style={{ backgroundColor: "#1f1f1f" }}>
+                <div className="container d-flex justify-content-between align-items-center">
+                    <Link className="navbar-brand text-light d-flex align-items-center" to="/home">
+                        <FaWallet size={30} color="#4caf50" style={{ marginRight: "10px" }} />
+                    </Link>
+
+                    <div className="collapse navbar-collapse justify-content-center" id="navbarNav">
+                        <ul className="navbar-nav">
+                            <li className="nav-item">
+                                <Link className="nav-link text-light" to="/home">Inicio</Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link text-light" to="/explorar-operaciones">Explorar Operaciones</Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link text-light" to="/cartera">Cartera</Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link text-light" to="/historial">Historial</Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link text-light" to="/facturacion">Facturación</Link>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div className="d-flex align-items-center">
+                        <Link to="/perfil" className="nav-link text-light d-flex align-items-center">
+                            <FaUserCircle size={30} color="#4caf50" />
+                        </Link>
+                        <button onClick={handleLogout} className="btn btn-link nav-link text-light d-flex align-items-center" style={{ textDecoration: "none" }}>
+                            <FaSignOutAlt size={30} color="#4caf50" style={{ marginLeft: "15px" }} />
+                        </button>
+                    </div>
+                </div>
+            </nav>
+
+            {/* Main Content */}
             <div className="container mt-5">
                 <div
                     className="card p-4"

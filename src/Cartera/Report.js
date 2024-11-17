@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { collection, getDocs, query, where } from "firebase/firestore";
 import { differenceInDays } from "date-fns"; // Para cálculo de días entre fechas
 import { db, auth } from "../utils/firebase";
+import { collection, addDoc, deleteDoc, doc, query, where, getDocs } from "firebase/firestore";
+import { FaWallet, FaUserCircle, FaSignOutAlt } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
 
 function CarteraCalculations() {
     const [carteras, setCarteras] = useState([]);
@@ -25,6 +27,8 @@ function CarteraCalculations() {
         TEP: 0,
         TE:0// Nuevo resultado: Tasa Efectiva Periódica
     });
+
+    const navigate = useNavigate();
 
     // Fetch carteras del usuario
     useEffect(() => {
@@ -174,7 +178,14 @@ function CarteraCalculations() {
     };
 
 
-
+    const handleLogout = async () => {
+        try {
+            await auth.signOut();
+            navigate("/");
+        } catch (error) {
+            console.error("Error al cerrar sesión:", error);
+        }
+    };
 
 
 
@@ -184,6 +195,43 @@ function CarteraCalculations() {
 
     return (
         <div style={{ backgroundColor: "#121212", minHeight: "100vh" }}>
+            {/* Navbar */}
+            <nav className="navbar navbar-expand-lg navbar-dark shadow-sm" style={{ backgroundColor: "#1f1f1f" }}>
+                <div className="container d-flex justify-content-between align-items-center">
+                    <Link className="navbar-brand text-light d-flex align-items-center" to="/home">
+                        <FaWallet size={30} color="#4caf50" style={{ marginRight: "10px" }} />
+                    </Link>
+
+                    <div className="collapse navbar-collapse justify-content-center" id="navbarNav">
+                        <ul className="navbar-nav">
+                            <li className="nav-item">
+                                <Link className="nav-link text-light" to="/home">Inicio</Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link text-light" to="/explorar-operaciones">Explorar Operaciones</Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link text-light" to="/cartera">Cartera</Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link text-light" to="/historial">Historial</Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link text-light" to="/facturacion">Facturación</Link>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div className="d-flex align-items-center">
+                        <Link to="/perfil" className="nav-link text-light d-flex align-items-center">
+                            <FaUserCircle size={30} color="#4caf50" />
+                        </Link>
+                        <button onClick={handleLogout} className="btn btn-link nav-link text-light d-flex align-items-center" style={{ textDecoration: "none" }}>
+                            <FaSignOutAlt size={30} color="#4caf50" style={{ marginLeft: "15px" }} />
+                        </button>
+                    </div>
+                </div>
+            </nav>
             <div className="container mt-5">
                 <div className="card p-4" style={{ backgroundColor: "#1f1f1f", borderRadius: "15px" }}>
                     <h2 className="text-center mb-4" style={{ color: "#ffffff", fontWeight: "bold" }}>
