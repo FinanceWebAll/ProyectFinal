@@ -59,6 +59,9 @@ function Home() {
                 <Link className="nav-link text-light" to="/explorar-operaciones">Realizar Operación</Link>
               </li>
               <li className="nav-item">
+                <Link className="nav-link text-light" to="/Cartera">Cartera</Link>
+              </li>
+              <li className="nav-item">
                 <Link className="nav-link text-light" to="/historial">Historial</Link>
               </li>
               <li className="nav-item">
