@@ -2,16 +2,22 @@ import React, { useEffect, useState } from 'react';
 import { FaWallet, FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
-import { auth } from './utils/firebase';
+import { auth, db } from './utils/firebase';
+import { collection, getDocs } from 'firebase/firestore';
 import './Historial.css';
 
 function Historial() {
   const [operaciones, setOperaciones] = useState([]);
   const navigate = useNavigate();
 
-  const cargarHistorial = () => {
-    const historialGuardado = JSON.parse(localStorage.getItem('historialOperaciones')) || [];
-    setOperaciones(historialGuardado); // Cargar operaciones en el estado
+  const cargarHistorial = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, 'historialOperaciones'));
+      const historial = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setOperaciones(historial);
+    } catch (error) {
+      console.error('Error al cargar el historial desde Firebase:', error);
+    }
   };
 
   useEffect(() => {

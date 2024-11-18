@@ -1,8 +1,9 @@
-
 import React, { useState } from 'react';
 import { FaUserCircle } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import '../Operaciones css/Wacc.css';  // Asegúrate de que la ruta de tu CSS sea correcta
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../utils/firebase';
+import '../Operaciones css/Wacc.css';
 
 function Wacc() {
   const navigate = useNavigate();
@@ -14,10 +15,6 @@ function Wacc() {
   const [costoFlotacion, setCostoFlotacion] = useState('');
   const [dividendoProyectado, setDividendoProyectado] = useState('');
   const [ks, setKs] = useState('');
-
-  // Variables que guardan los valores operacionales
-  const [crecimientoOperador, setCrecimientoOperador] = useState('');
-  const [flotacionOperador, setFlotacionOperador] = useState('');
 
   // Datos de la segunda parte (Acciones Preferentes)
   const [precioAccionPreferentes, setPrecioAccionPreferentes] = useState('');
@@ -36,7 +33,7 @@ function Wacc() {
   const [segundoPaso, setSegundoPaso] = useState(false);
   const [tercerPaso, setTercerPaso] = useState(false); // Flag para mostrar la tercera parte
 
-  const calcularWacc = () => {
+  const calcularWacc = async () => {
     // Validar campos
     if (!precioAccion || !tasaCrecimiento || !ultimoDividendo || !costoFlotacion) {
       setErrorMessage("Por favor, ingrese todos los campos.");
@@ -48,22 +45,38 @@ function Wacc() {
     const crecimientoOperadorValue = tasaCrecimiento / 100;
     const flotacionOperadorValue = costoFlotacion / 100;
 
-    setCrecimientoOperador(crecimientoOperadorValue);
-    setFlotacionOperador(flotacionOperadorValue);
-
     // Dividendo proyectado: Último dividendo * (1 + Tasa de crecimiento)
     const dividendoProj = ultimoDividendo * (1 + crecimientoOperadorValue);
-    setDividendoProyectado(dividendoProj.toFixed(2));  
+    setDividendoProyectado(dividendoProj.toFixed(2));
 
     // KS: (Dividendo proyectado / (Precio de la acción * (1 - Costo de flotación))) + Tasa de crecimiento
     const ksCalc = (dividendoProj / (precioAccion * (1 - flotacionOperadorValue))) + crecimientoOperadorValue;
-    setKs((ksCalc * 100).toFixed(3));  // KS como porcentaje, con 3 decimales y multiplicado por 100
+    setKs((ksCalc * 100).toFixed(3)); // KS como porcentaje, con 3 decimales y multiplicado por 100
+
+    // Guardar la operación en Firebase
+    const operacion = {
+      descripcion: 'Calculo WACC - Acciones Comunes',
+      precioAccion,
+      tasaCrecimiento,
+      ultimoDividendo,
+      costoFlotacion,
+      dividendoProyectado: dividendoProj.toFixed(2),
+      ks: (ksCalc * 100).toFixed(3),
+      fecha: new Date().toLocaleString(),
+    };
+
+    try {
+      await addDoc(collection(db, 'historialOperaciones'), operacion);
+      console.log('Operación guardada con éxito en Firebase');
+    } catch (error) {
+      console.error('Error al guardar la operación en Firebase:', error);
+    }
 
     // Mostrar la segunda parte (Acciones Preferentes)
     setSegundoPaso(true);
   };
 
-  const calcularPreferentes = () => {
+  const calcularPreferentes = async () => {
     // Validar campos de acciones preferentes
     if (!precioAccionPreferentes || !DividendoAccionesPreferentes || !costoFlotacionPreferentes) {
       setErrorMessage("Por favor, ingrese todos los campos para Acciones Preferentes.");
@@ -76,13 +89,30 @@ function Wacc() {
 
     // KS para preferentes
     const ksCalcPreferentes = DividendoAccionesPreferentes / (precioAccionPreferentes * (1 - flotacionOperadorPreferentes));
-    setKsPreferentes((ksCalcPreferentes * 100).toFixed(3));  // KS en porcentaje
+    setKsPreferentes((ksCalcPreferentes * 100).toFixed(3)); // KS en porcentaje
+
+    // Guardar la operación en Firebase
+    const operacion = {
+      descripcion: 'Calculo WACC - Acciones Preferentes',
+      precioAccionPreferentes,
+      DividendoAccionesPreferentes,
+      costoFlotacionPreferentes,
+      ksPreferentes: (ksCalcPreferentes * 100).toFixed(3),
+      fecha: new Date().toLocaleString(),
+    };
+
+    try {
+      await addDoc(collection(db, 'historialOperaciones'), operacion);
+      console.log('Operación guardada con éxito en Firebase');
+    } catch (error) {
+      console.error('Error al guardar la operación en Firebase:', error);
+    }
 
     // Mostrar la tercera parte (Utilidades)
     setTercerPaso(true);
   };
 
-  const calcularUtilidades = () => {
+  const calcularUtilidades = async () => {
     // Validar campos de utilidades
     if (!precioAccionUtilidades || !ultimoDividendoUtilidades || !tasaCrecimientoUtilidades) {
       setErrorMessage("Por favor, ingrese todos los campos para Utilidades.");
@@ -92,11 +122,29 @@ function Wacc() {
 
     // Dividendo proyectado para utilidades
     const dividendoProjUtilidades = ultimoDividendoUtilidades * (1 + tasaCrecimientoUtilidades / 100);
-    setDividendoProyectadoUtilidades(dividendoProjUtilidades.toFixed(2));  // Redondear a 7 decimales
+    setDividendoProyectadoUtilidades(dividendoProjUtilidades.toFixed(2));
 
     // KS para utilidades
     const ksCalcUtilidades = dividendoProjUtilidades / precioAccionUtilidades + tasaCrecimientoUtilidades / 100;
-    setKsUtilidades((ksCalcUtilidades * 100).toFixed(3));  // KS en porcentaje
+    setKsUtilidades((ksCalcUtilidades * 100).toFixed(3)); // KS en porcentaje
+
+    // Guardar la operación en Firebase
+    const operacion = {
+      descripcion: 'Calculo WACC - Utilidades',
+      precioAccionUtilidades,
+      tasaCrecimientoUtilidades,
+      ultimoDividendoUtilidades,
+      dividendoProyectadoUtilidades: dividendoProjUtilidades.toFixed(2),
+      ksUtilidades: (ksCalcUtilidades * 100).toFixed(3),
+      fecha: new Date().toLocaleString(),
+    };
+
+    try {
+      await addDoc(collection(db, 'historialOperaciones'), operacion);
+      console.log('Operación guardada con éxito en Firebase');
+    } catch (error) {
+      console.error('Error al guardar la operación en Firebase:', error);
+    }
   };
 
   return (
@@ -126,7 +174,6 @@ function Wacc() {
         <div className="card p-4" style={{ backgroundColor: '#1f1f1f', borderRadius: '15px', boxShadow: '0 10px 25px rgba(0, 0, 0, 0.5)' }}>
           {/* Primera parte: Acciones Comunes */}
           <h2 className="text-center mb-4" style={{ color: '#ffffff', fontWeight: 'bold' }}>Acciones Comunes</h2>
-          
           {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
 
           <div className="form-group mt-4">

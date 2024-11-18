@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { FaWallet, FaUserCircle } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../utils/firebase';
 import '../Operaciones css/SimulacionPago.css';
 
 function SimulacionPago() {
@@ -10,27 +12,42 @@ function SimulacionPago() {
   const [resultado, setResultado] = useState(null);
   const navigate = useNavigate();
 
-  const calcularCuotas = () => {
+  const calcularCuotas = async () => {
     if (monto === '' || cuotas === '' || tasaInteres === '') {
       alert("Por favor, complete todos los campos antes de calcular la cuota mensual.");
       return;
     }
     const tasaMensual = (tasaInteres / 100) / 12;
     const cuota = (monto * tasaMensual) / (1 - Math.pow(1 + tasaMensual, -cuotas));
-    setResultado(cuota.toFixed(2));
+    const resultadoFinal = cuota.toFixed(2);
+    setResultado(resultadoFinal);
+
+    // Guardar la operación en Firebase
+    const operacion = {
+      descripcion: 'Simulación de Planes de Pago',
+      monto,
+      cuotas,
+      tasaInteres,
+      cuotaMensual: resultadoFinal,
+      fecha: new Date().toLocaleString(),
+    };
+
+    try {
+      await addDoc(collection(db, 'historialOperaciones'), operacion);
+      console.log('Operación guardada con éxito en Firebase');
+    } catch (error) {
+      console.error('Error al guardar la operación en Firebase:', error);
+    }
   };
 
   return (
     <div className="simulacion-pago-container" style={{ backgroundColor: '#121212', minHeight: '100vh' }}>
-      {}
       <nav className="navbar navbar-expand-lg navbar-dark shadow-sm" style={{ backgroundColor: '#1f1f1f' }}>
         <div className="container d-flex justify-content-between align-items-center">
-          {}
           <Link className="navbar-brand text-light d-flex align-items-center" to="/explorar-operaciones">
             <FaWallet size={30} color="#4caf50" style={{ marginRight: '10px' }} />
           </Link>
 
-          {}
           <div className="collapse navbar-collapse justify-content-center" id="navbarNav">
             <ul className="navbar-nav">
               <li className="nav-item">
@@ -48,14 +65,12 @@ function SimulacionPago() {
             </ul>
           </div>
 
-          {}
           <Link to="/perfil" className="nav-link text-light d-flex align-items-center">
             <FaUserCircle size={30} color="#4caf50" />
           </Link>
         </div>
       </nav>
 
-      {}
       <div className="container mt-5">
         <div className="card p-4" style={{ backgroundColor: '#1f1f1f', borderRadius: '15px', boxShadow: '0 10px 25px rgba(0, 0, 0, 0.5)' }}>
           <h2 className="text-center mb-4" style={{ color: '#ffffff', fontWeight: 'bold' }}>Simulación de Planes de Pago</h2>
@@ -102,7 +117,6 @@ function SimulacionPago() {
             </div>
           )}
 
-          {}
           <button
             className="btn btn-secondary mt-4"
             style={{ width: '100%', border: 'none', borderRadius: '25px' }}

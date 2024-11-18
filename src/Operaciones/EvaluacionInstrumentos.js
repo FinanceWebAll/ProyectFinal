@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { FaWallet, FaUserCircle } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
+import { collection, addDoc } from 'firebase/firestore';
+import { auth, db } from '../utils/firebase';
 import '../Operaciones css/EvaluacionInstrumentos.css';
 
 function EvaluacionInstrumentos() {
@@ -9,27 +11,41 @@ function EvaluacionInstrumentos() {
   const [resultado, setResultado] = useState(null);
   const navigate = useNavigate();
 
-  const calcularTCEA = () => {
+  const calcularTCEA = async () => {
     if (capital === '' || tasaAnual === '') {
       alert("Por favor, ingrese todos los valores requeridos.");
       return;
     }
 
     const tcea = ((1 + tasaAnual / 100) ** 12 - 1) * 100;
-    setResultado(tcea.toFixed(2));
+    const resultadoFinal = tcea.toFixed(2);
+    setResultado(resultadoFinal);
+
+    // Guardar la operación en Firebase
+    const operacion = {
+      descripcion: 'Evaluación de Instrumentos Financieros (TCEA)',
+      capital,
+      tasaAnual,
+      tcea: resultadoFinal,
+      fecha: new Date().toLocaleString(),
+    };
+
+    try {
+      await addDoc(collection(db, 'historialOperaciones'), operacion);
+      console.log('Operación guardada con éxito en Firebase');
+    } catch (error) {
+      console.error('Error al guardar la operación en Firebase:', error);
+    }
   };
 
   return (
     <div className="evaluacion-instrumentos-container" style={{ backgroundColor: '#121212', minHeight: '100vh' }}>
-      {}
       <nav className="navbar navbar-expand-lg navbar-dark shadow-sm" style={{ backgroundColor: '#1f1f1f' }}>
         <div className="container d-flex justify-content-between align-items-center">
-          {}
           <Link className="navbar-brand text-light d-flex align-items-center" to="/explorar-operaciones">
             <FaWallet size={30} color="#4caf50" style={{ marginRight: '10px' }} />
           </Link>
 
-          {}
           <div className="collapse navbar-collapse justify-content-center" id="navbarNav">
             <ul className="navbar-nav">
               <li className="nav-item">
@@ -47,14 +63,12 @@ function EvaluacionInstrumentos() {
             </ul>
           </div>
 
-          {}
           <Link to="/perfil" className="nav-link text-light d-flex align-items-center">
             <FaUserCircle size={30} color="#4caf50" />
           </Link>
         </div>
       </nav>
 
-      {}
       <div className="container mt-5">
         <div className="card p-4" style={{ backgroundColor: '#1f1f1f', borderRadius: '15px', boxShadow: '0 10px 25px rgba(0, 0, 0, 0.5)' }}>
           <h2 className="text-center mb-4" style={{ color: '#ffffff', fontWeight: 'bold' }}>Evaluación de Instrumentos Financieros</h2>

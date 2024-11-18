@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { FaWallet, FaUserCircle } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../utils/firebase';
 import '../Operaciones css/ProyeccionValor.css';
 
 function ProyeccionValor() {
@@ -10,26 +12,41 @@ function ProyeccionValor() {
   const [resultado, setResultado] = useState(null);
   const navigate = useNavigate();
 
-  const calcularValorFuturo = () => {
+  const calcularValorFuturo = async () => {
     if (principal === '' || tasa === '' || tiempo === '') {
       alert("Por favor, complete todos los campos antes de calcular el valor futuro.");
       return;
     }
     const res = principal * Math.pow((1 + tasa / 100), tiempo);
-    setResultado(res.toFixed(2));
+    const resultadoFinal = res.toFixed(2);
+    setResultado(resultadoFinal);
+
+    // Guardar la operación en Firebase
+    const operacion = {
+      descripcion: 'Proyección de Valor Futuro',
+      principal,
+      tasa,
+      tiempo,
+      resultado: resultadoFinal,
+      fecha: new Date().toLocaleString(),
+    };
+
+    try {
+      await addDoc(collection(db, 'historialOperaciones'), operacion);
+      console.log('Operación guardada con éxito en Firebase');
+    } catch (error) {
+      console.error('Error al guardar la operación en Firebase:', error);
+    }
   };
 
   return (
     <div className="proyeccion-valor-container" style={{ backgroundColor: '#121212', minHeight: '100vh' }}>
-      {}
       <nav className="navbar navbar-expand-lg navbar-dark shadow-sm" style={{ backgroundColor: '#1f1f1f' }}>
         <div className="container d-flex justify-content-between align-items-center">
-          {}
           <Link className="navbar-brand text-light d-flex align-items-center" to="/explorar-operaciones">
             <FaWallet size={30} color="#4caf50" style={{ marginRight: '10px' }} />
           </Link>
 
-          {}
           <div className="collapse navbar-collapse justify-content-center" id="navbarNav">
             <ul className="navbar-nav">
               <li className="nav-item">
@@ -47,14 +64,12 @@ function ProyeccionValor() {
             </ul>
           </div>
 
-          {}
           <Link to="/perfil" className="nav-link text-light d-flex align-items-center">
             <FaUserCircle size={30} color="#4caf50" />
           </Link>
         </div>
       </nav>
 
-      {}
       <div className="container mt-5">
         <div className="card p-4" style={{ backgroundColor: '#1f1f1f', borderRadius: '15px', boxShadow: '0 10px 25px rgba(0, 0, 0, 0.5)' }}>
           <h2 className="text-center mb-4" style={{ color: '#ffffff', fontWeight: 'bold' }}>Proyección de Valor Futuro y Presente</h2>
@@ -101,7 +116,6 @@ function ProyeccionValor() {
             </div>
           )}
 
-          {}
           <button
             className="btn btn-secondary mt-4"
             style={{ width: '100%', border: 'none', borderRadius: '25px' }}

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { FaWallet, FaUserCircle } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../utils/firebase';
 import '../Operaciones css/GeneradorFlujoCaja.css';
 
 function GeneradorFlujoCaja() {
@@ -18,7 +20,7 @@ function GeneradorFlujoCaja() {
     setFlujos([...flujos, { periodo: flujos.length + 1, ingresos: '', costos: '' }]);
   };
 
-  const calcularFlujoCaja = () => {
+  const calcularFlujoCaja = async () => {
     if (flujos.some(flujo => flujo.ingresos === '' || flujo.costos === '')) {
       alert("Por favor, complete todos los ingresos y costos antes de calcular.");
       return;
@@ -26,20 +28,33 @@ function GeneradorFlujoCaja() {
 
     const flujosNetos = flujos.map(({ ingresos, costos }) => parseFloat(ingresos) - parseFloat(costos));
     const flujoTotal = flujosNetos.reduce((total, flujo) => total + flujo, 0);
-    setResultado(flujoTotal.toFixed(2));
+    const resultadoFinal = flujoTotal.toFixed(2);
+    setResultado(resultadoFinal);
+
+    // Guardar la operación en Firebase
+    const operacion = {
+      descripcion: 'Generador de Flujos de Caja',
+      flujos,
+      flujoTotal: resultadoFinal,
+      fecha: new Date().toLocaleString(),
+    };
+
+    try {
+      await addDoc(collection(db, 'historialOperaciones'), operacion);
+      console.log('Operación guardada con éxito en Firebase');
+    } catch (error) {
+      console.error('Error al guardar la operación en Firebase:', error);
+    }
   };
 
   return (
     <div className="generador-flujo-caja-container" style={{ backgroundColor: '#121212', minHeight: '100vh' }}>
-      {}
       <nav className="navbar navbar-expand-lg navbar-dark shadow-sm" style={{ backgroundColor: '#1f1f1f' }}>
         <div className="container d-flex justify-content-between align-items-center">
-          {}
           <Link className="navbar-brand text-light d-flex align-items-center" to="/explorar-operaciones">
             <FaWallet size={30} color="#4caf50" style={{ marginRight: '10px' }} />
           </Link>
 
-          {}
           <div className="collapse navbar-collapse justify-content-center" id="navbarNav">
             <ul className="navbar-nav">
               <li className="nav-item">
@@ -57,14 +72,12 @@ function GeneradorFlujoCaja() {
             </ul>
           </div>
 
-          {}
           <Link to="/perfil" className="nav-link text-light d-flex align-items-center">
             <FaUserCircle size={30} color="#4caf50" />
           </Link>
         </div>
       </nav>
 
-      {}
       <div className="container mt-5">
         <div className="card p-4" style={{ backgroundColor: '#1f1f1f', borderRadius: '15px', boxShadow: '0 10px 25px rgba(0, 0, 0, 0.5)' }}>
           <h2 className="text-center mb-4" style={{ color: '#ffffff', fontWeight: 'bold' }}>Generador de Flujos de Caja para Proyectos</h2>
